@@ -1,0 +1,1 @@
+/ { chosen { zephyr,code-partition = &debugger_boot_partition; }; };

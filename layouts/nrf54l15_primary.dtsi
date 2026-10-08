@@ -1,0 +1,66 @@
+/ {
+	soc {
+		debugger_retained: memory@2002e000 {
+			compatible = "mmio-sram";
+			reg = <0x2002e000 0x1000>;
+		};
+	};
+};
+
+&cpuapp_sram {
+	reg = <0x20000000 0x2e000>;
+	ranges = <0x0 0x20000000 0x2e000>;
+};
+
+&cpuapp_rram {
+	reg = <0x0 0x140000>;
+	ranges = <0x0 0x0 0x140000>;
+	/delete-node/ partitions;
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges;
+		debugger_boot_partition: partition@0 {
+			compatible = "zephyr,mapped-partition";
+			reg = <0x0 0x20000>;
+		};
+		app_a_partition: partition@20000 {
+			compatible = "zephyr,mapped-partition";
+			reg = <0x20000 0x90000>;
+		};
+		app_b_partition: partition@b0000 {
+			compatible = "zephyr,mapped-partition";
+			reg = <0xb0000 0x90000>;
+		};
+	};
+};
+
+&rram_controller {
+	debugger_secondary_flash: rram@140000 {
+		compatible = "soc-nv-flash";
+		reg = <0x140000 0x3d000>;
+		ranges = <0x0 0x140000 0x3d000>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+		erase-block-size = <4096>;
+		write-block-size = <16>;
+		partitions {
+			compatible = "fixed-partitions";
+			#address-cells = <1>;
+			#size-cells = <1>;
+			ranges;
+			app_c_partition: partition@0 {
+				compatible = "zephyr,mapped-partition";
+				reg = <0x0 0x20000>;
+			};
+			app_d_partition: partition@20000 {
+				compatible = "zephyr,mapped-partition";
+				reg = <0x20000 0x1d000>;
+			};
+		};
+	};
+};
+
+&uart30 { status = "disabled"; };
+&cpuflpr_vpr { status = "disabled"; };

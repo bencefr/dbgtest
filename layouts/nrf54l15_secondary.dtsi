@@ -1,0 +1,35 @@
+/ {
+	soc {
+		debugger_retained: memory@2002e000 {
+			compatible = "mmio-sram";
+			reg = <0x2002e000 0x1000>;
+		};
+	};
+};
+
+&cpuflpr_sram {
+	reg = <0x2002f000 0x11000>;
+	ranges = <0x0 0x2002f000 0x11000>;
+};
+
+&cpuflpr_rram {
+	reg = <0x140000 0x3d000>;
+	ranges = <0x0 0x140000 0x3d000>;
+	/delete-node/ partitions;
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges;
+		app_c_partition: partition@0 {
+			compatible = "zephyr,mapped-partition";
+			reg = <0x0 0x20000>;
+		};
+		app_d_partition: partition@20000 {
+			compatible = "zephyr,mapped-partition";
+			reg = <0x20000 0x1d000>;
+		};
+	};
+};
+
+&uart30 { status = "disabled"; };

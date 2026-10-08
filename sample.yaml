@@ -1,0 +1,16 @@
+sample:
+  name: Multi-domain debugger fixture
+  description: Five independent ELF images across CPUAPP and CPUNET or FLPR
+tests:
+  sample.dbgtest:
+    sysbuild: true
+    build_only: true
+    tags:
+      - debug
+      - sysbuild
+    platform_allow:
+      - nrf5340_audio_dk/nrf5340/cpuapp
+      - nrf54l15dk/nrf54l15/cpuapp
+    integration_platforms:
+      - nrf5340_audio_dk/nrf5340/cpuapp
+      - nrf54l15dk/nrf54l15/cpuapp

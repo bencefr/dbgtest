@@ -1,0 +1,23 @@
+/ {
+	soc {
+		debugger_retained: memory@20070000 {
+			compatible = "mmio-sram";
+			reg = <0x20070000 0x1000>;
+		};
+	};
+};
+
+&flash1 {
+	/delete-node/ partitions;
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+		app_c_partition: partition@0 {
+			reg = <0x0 0x20000>;
+		};
+		app_d_partition: partition@20000 {
+			reg = <0x20000 0x20000>;
+		};
+	};
+};

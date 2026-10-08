@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.20.0)
+find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
+project(debugger_image)
+
+zephyr_get(DEBUGGER_IMAGE_ID SYSBUILD)
+if(NOT DEBUGGER_IMAGE_ID MATCHES "^[1-4]$")
+  message(FATAL_ERROR "Build images through the top-level sysbuild project")
+endif()
+
+target_compile_definitions(app PRIVATE DEBUGGER_IMAGE_ID=${DEBUGGER_IMAGE_ID})
+target_include_directories(app PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../src)
+target_sources(app PRIVATE ../src/application.c ../src/workload.c)
+if(DEBUGGER_IMAGE_ID LESS 3)
+  target_sources(app PRIVATE ../src/buttons.c ../src/secondary.c)
+elseif(CONFIG_ARM)
+  target_sources(app PRIVATE ../src/handoff.c ../src/network_select.c)
+endif()
